@@ -1,0 +1,273 @@
+.navbar {
+  background: linear-gradient(90deg,
+      rgba(84, 57, 247, 1) 0%,
+      rgba(146, 24, 250, 1) 90%);
+}
+
+.modal-header {
+  border-bottom: rgba(128, 128, 128, 0.123) 1px solid !important;
+  margin-bottom: 20px;
+}
+
+.w-45 {
+  width: 45%;
+}
+
+nav form i,
+nav .modal-body label {
+  color: #768191;
+}
+
+.addTask {
+  background-color: #a945fb !important;
+  color: white !important;
+}
+
+.plusIcon {
+  color: white !important;
+}
+
+.min-h-500px {
+  min-height: 500px;
+}
+
+.mainCardBackground {
+  background-color: rgba(245, 246, 247, 0.726);
+}
+
+.enterCardBackground {
+  background-color: rgba(255, 255, 255, 0.507);
+}
+
+.priority-low {
+  background-color: #d1e7dd !important;
+  color: #0f5132 !important;
+}
+
+.priority-medium {
+  background-color: #fff3cd !important;
+  color: #856404 !important;
+}
+
+.priority-high {
+  background-color: #f8d7da !important;
+  color: #842029 !important;
+}
+
+.btn-success {
+  background-color: #d0fae5;
+  color: #027c57;
+}
+
+.btn-warning {
+  background-color: #fef3c6;
+  color: #bd5205;
+}
+
+.is-invalid {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+}
+
+.priority-low,
+.priority-medium,
+.priority-high {
+  padding: 5px 15px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: bold;
+  display: inline-block;
+  text-align: center;
+  border: none;
+}
+
+.mainCardBackground:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.enterCardBackground {
+  display: block !important;
+  position: relative !important;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out !important;
+  cursor: pointer;
+}
+
+.mainCardBackground .card.enterCardBackground:hover {
+  transform: translateY(-10px) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+  background-color: #ffffff !important;
+  z-index: 999 !important;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+  .min-h-500px {
+    min-height: auto;
+  }
+
+  .col-md-4 {
+    margin-bottom: 20px;
+  }
+
+  .modal-footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modal-footer button {
+    width: 100% !important;
+  }
+
+  .w-25 {
+    width: 50% !important;
+  }
+}
+
+
+@media (max-width: 320px) {
+  .navbar {
+    padding: 2px 0 !important;
+  }
+
+  .navbar-brand h1 {
+    font-size: 13px !important;
+    margin: 0 !important;
+  }
+
+  .addTask {
+    padding: 2px 8px !important;
+    font-size: 11px !important;
+  }
+
+  .modal-dialog {
+    margin: 5px !important;
+  }
+
+  .modal-content {
+    padding: 2px !important;
+  }
+
+  .modal-header {
+    padding: 5px 10px !important;
+    margin-bottom: 5px !important;
+  }
+
+  .modal-title {
+    font-size: 12px !important;
+  }
+
+  .form-label {
+    font-size: 9px !important;
+    margin-bottom: 1px !important;
+    color: #495057 !important;
+  }
+
+  .form-control,
+  .form-select {
+    font-size: 10px !important;
+    padding: 4px 6px !important;
+    height: 28px !important;
+  }
+
+  .form-control::placeholder {
+    font-size: 8.5px !important;
+    opacity: 0.8;
+  }
+
+  textarea.form-control {
+    height: 45px !important;
+    font-size: 10px !important;
+  }
+
+  .mb-3 {
+    margin-bottom: 6px !important;
+  }
+
+  .modal-footer {
+    padding: 5px !important;
+    gap: 4px !important;
+  }
+
+  .modal-footer .btn {
+    font-size: 10px !important;
+    padding: 4px 8px !important;
+  }
+
+  .container-lg {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+
+  .enterCardBackground {
+    padding: 8px !important;
+  }
+
+  h5 {
+    font-size: 13px !important;
+  }
+
+  p {
+    font-size: 10px !important;
+  }
+
+  .text-secondary.small {
+    font-size: 9px !important;
+  }
+
+  .btn-sm {
+    padding: 3px 5px !important;
+    font-size: 9px !important;
+  }
+
+  .priority-low,
+  .priority-medium,
+  .priority-high {
+    padding: 2px 6px !important;
+    font-size: 8px !important;
+    min-width: 50px !important;
+  }
+}
+
+@media (max-width: 220px) {
+  .navbar-brand h1 {
+    display: none;
+  }
+
+  .form-label {
+    font-size: 8px !important;
+  }
+
+  .form-control {
+    font-size: 9px !important;
+    height: 24px !important;
+  }
+
+  .form-control::placeholder {
+    font-size: 7.5px !important;
+  }
+
+  .modal-footer,
+  .d-flex.gap-2 {
+    flex-direction: column !important;
+  }
+
+  .modal-footer .btn,
+  .btn-sm {
+    width: 100% !important;
+    margin: 1px 0 !important;
+    font-size: 9px !important;
+  }
+
+  h5 {
+    font-size: 11px !important;
+  }
+
+  .badge {
+    font-size: 7px !important;
+  }
+
+  .mb-3 {
+    margin-bottom: 4px !important;
+  }
+}

@@ -1,0 +1,300 @@
+<section id="html">
+  <nav class="navbar">
+    <div class="container d-flex justify-content-between align-content-center mt-1">
+      <a class="navbar-brand d-flex justify-content-center align-content-center gap-2 text-white" href="#">
+        <i class="fa-solid fa-table-columns text-2xl fs-4 mt-1"></i>
+        <h1 class="fs-4">Kanban</h1>
+      </a>
+      <div class="justify-content-end">
+        <button type="button" class="btn addTask border-0 px-3 py-2 rounded-2" data-bs-toggle="modal"
+          data-bs-target="#exampleModal" (click)="clearForm()">
+          <i class="fa-solid fa-plus plusIcon"></i>
+        </button>
+      </div>
+
+      <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-content p-1">
+              <div class="modal-header border-0 pb-4 p-4">
+                <h2 class="modal-title text-muted fs-4 fw-bold" id="exampleModalLabel">
+                  Create New Task
+                </h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div>
+                <div class="modal-body pt-0">
+                  <div class="mb-3">
+                    <label for="taskTitle" class="form-label fw-semibold">
+                      <i class="fa-solid fa-heading text-slate-400"></i> Task
+                      Title <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control form-control-lg" [class.is-invalid]="isTitleInvalid"
+                      (input)="isTitleInvalid = false" id="taskTitle" placeholder="What needs to be done?"
+                      [(ngModel)]="titleValue" />
+                    <div *ngIf="isTitleInvalid" class="text-danger small mt-1">Title is required!</div>
+                  </div>
+                  <div class="row g-2 mb-3">
+                    <div class="col-md-6">
+                      <label for="taskPriority" class="form-label fw-semibold"><i class="fa fa-flag me-1"></i>
+                        Priority</label>
+                      <select class="form-select" id="taskPriority" [(ngModel)]="priorityValue">
+                        <option>Medium</option>
+                        <option>Low</option>
+                        <option>High</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="taskDueDate" class="form-label fw-semibold"><i class="fa fa-calendar me-1"></i> Due
+                        Date</label>
+                      <input type="date" class="form-control" id="taskDueDate" placeholder="mm/dd/yyyy"
+                        [(ngModel)]="dateValue" />
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="taskDescription" class="form-label fw-semibold"><i class="fa fa-align-left me-1"></i>
+                      Description</label>
+                    <textarea [(ngModel)]="descValue" class="form-control" id="taskDescription" rows="3" maxlength="500"
+                      placeholder="Add more details about this task..."></textarea>
+                    <div class="form-text text-end">
+                      <span>{{ descValue ? descValue.length : 0 }}</span>/500
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer border-0 pt-0 d-flex w-100">
+                  <button type="button" class="btn btn-light w-45" data-bs-dismiss="modal">
+                    Cancel
+                  </button>
+                  @if (editIndex == -1) {
+                  <button type="button" class="btn btn-primary w-50 fw-semibold"
+                    [attr.data-bs-dismiss]="titleValue && titleValue.trim() ? 'modal' : null"
+                    (click)="getInputsValues()">
+                    + Add Task
+                  </button>
+                  } @else {
+                  <button type="button" class="btn btn-warning w-50 fw-semibold border-0"
+                    [attr.data-bs-dismiss]="titleValue && titleValue.trim() ? 'modal' : null" (click)="updateTask()">
+                    Update Task
+                  </button>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="container-lg py-4">
+    <div class="row g-4 justify-content-center min-h-500px">
+      <div class="col-12 col-md-4">
+        <div class="card mainCardBackground h-100 shadow border-0 rounded-4 p-3">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <span class="bg-light rounded-circle p-2"><i
+                class="fa-solid fa-clipboard-list fa-lg text-secondary"></i></span>
+            <div class="d-flex flex-column">
+              <span class="fw-bold text-muted fs-5">To Do</span>
+              <span class="text-muted small">{{ tasksList.length }} tasks</span>
+            </div>
+          </div>
+
+          @for (task of tasksList; track $index) {
+          <div class="card mb-2 enterCardBackground shadow-sm rounded-4 p-3 w-100">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="text-secondary small">{{ $index + 1 }}</span>
+
+              <div>
+                <i class="fa-solid fa-pen text-secondary me-2" (click)="editTask($index, 'todo')" data-bs-toggle="modal"
+                  data-bs-target="#exampleModal" role="button"></i>
+                <i class="fa-solid fa-trash text-secondary" (click)="deleteTask($index, 'todo')" role="button"></i>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mb-1">{{ task.titleValue }}</h5>
+
+            <p class="text-secondary small mb-2">{{ task.descValue }}</p>
+
+            <span class="badge mb-3 d-inline-block" style="font-size: 10px; min-width: 80px; padding: 5px 8px;"
+              [ngClass]="{
+                'priority-high': task.priorityValue === 'High',
+                'priority-medium': task.priorityValue === 'Medium',
+                'priority-low': task.priorityValue === 'Low'
+              }">
+              <i class="fa-solid fa-circle me-1" style="font-size: 6px"></i>
+              {{ task.priorityValue }}
+            </span>
+
+            <div class="d-flex gap-3 text-secondary small mb-3">
+              <span>
+                <i class="fa-regular fa-calendar me-1"></i>
+                {{ task.dateValue }}
+              </span>
+              <span>
+                <i class="fa-regular fa-clock me-1"></i>
+                Just now
+              </span>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button class="btn border-0 btn-warning btn-sm rounded-3 px-3" (click)="sendToInProgress($index, 'todo')">
+                <i class="fa-solid fa-play me-1"></i>
+                Start
+              </button>
+
+              <button class="btn border-0 btn-success btn-sm rounded-3 px-3" (click)="sendToDone($index, 'todo')">
+                <i class="fa-solid fa-check me-1"></i>
+                Complete
+              </button>
+            </div>
+          </div>
+          } @empty {
+          <div class="d-flex flex-column align-items-center justify-content-center py-5">
+            <i class="fa-solid fa-folder fa-2x text-secondary mb-2 opacity-25"></i>
+            <div class="text-muted">No tasks yet</div>
+            <div class="text-muted small">Click + to add one</div>
+          </div>
+          }
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <div class="mainCardBackground h-100 shadow border-0 rounded-4 p-3">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <span class="bg-light rounded-circle p-2"><i class="fa-solid fa-spinner fa-lg text-warning"></i></span>
+            <div class="d-flex flex-column">
+              <span class="fw-bold text-muted fs-5">In Progress</span>
+              <span class="text-muted small">{{ inProgressList.length }} tasks</span>
+            </div>
+          </div>
+          @for (task of inProgressList; track $index) {
+          <div class="card mb-2 enterCardBackground shadow-sm rounded-4 p-3 w-100">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="text-secondary small"> {{ $index + 1 }}</span>
+
+              <div>
+                <i class="fa-solid fa-pen text-secondary me-2" (click)="editTask($index, 'inprogress')"
+                  data-bs-toggle="modal" data-bs-target="#exampleModal" role="button"></i>
+                <i class="fa-solid fa-trash text-secondary" (click)="deleteTask($index, 'inprogress')"
+                  role="button"></i>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mb-1">{{ task.titleValue }}</h5>
+
+            <p class="text-secondary small mb-2">{{ task.descValue }}</p>
+
+            <span class="badge mb-3 d-inline-block" style="font-size: 10px; min-width: 80px; padding: 5px 8px;"
+              [ngClass]="{
+                'priority-high': task.priorityValue === 'High',
+                'priority-medium': task.priorityValue === 'Medium',
+                'priority-low': task.priorityValue === 'Low'
+              }">
+              <i class="fa-solid fa-circle me-1" style="font-size: 6px"></i>
+              {{ task.priorityValue }}
+            </span>
+
+
+            <div class="d-flex gap-3 text-secondary small mb-3">
+              <span>
+                <i class="fa-regular fa-calendar me-1"></i>
+                {{ task.dateValue }}
+              </span>
+              <span>
+                <i class="fa-regular fa-clock me-1"></i>
+                Just now
+              </span>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button class="btn border-0 btn-warning btn-sm rounded-3 px-3"
+                (click)="returnToToDo($index, 'inprogress')">
+                <i class="fa-solid fa-arrow-rotate-left me-1"></i>
+                To do
+              </button>
+
+              <button class="btn border-0 btn-success btn-sm rounded-3 px-3" (click)="sendToDone($index, 'inprogress')">
+                <i class="fa-solid fa-check me-1"></i>
+                Complete
+              </button>
+            </div>
+          </div>
+          } @empty {
+          <div class="d-flex flex-column align-items-center justify-content-center py-5">
+            <i class="fa-solid fa-folder fa-2x text-secondary mb-2 opacity-25"></i>
+            <div class="text-muted">No tasks yet</div>
+            <div class="text-muted small">Click + to add one</div>
+          </div>
+          }
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <div class="mainCardBackground h-100 shadow border-0 rounded-4 p-3">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <span class="bg-light rounded-circle p-2"><i class="fa-solid fa-check-circle fa-lg text-success"></i></span>
+            <div class="d-flex flex-column">
+              <span class="fw-bold text-muted fs-5">Completed</span>
+              <span class="text-muted small">{{ doneList.length }} tasks</span>
+            </div>
+          </div>
+          @for (task of doneList; track $index) {
+          <div class="card mb-2 enterCardBackground shadow-sm rounded-4 p-3 w-100">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="text-secondary small"> {{ $index + 1 }}</span>
+
+              <div>
+                <i class="fa-solid fa-pen text-secondary me-2" (click)="editTask($index, 'done')" data-bs-toggle="modal"
+                  data-bs-target="#exampleModal" role="button"></i>
+                <i class="fa-solid fa-trash text-secondary" (click)="deleteTask($index, 'done')" role="button"></i>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mb-1">{{ task.titleValue }}</h5>
+
+            <p class="text-secondary small mb-2">{{ task.descValue }}</p>
+
+            <span class="badge mb-3 d-inline-block" style="font-size: 10px; min-width: 80px; padding: 5px 8px;"
+              [ngClass]="{
+                'priority-high': task.priorityValue === 'High',
+                'priority-medium': task.priorityValue === 'Medium',
+                'priority-low': task.priorityValue === 'Low'
+              }">
+              <i class="fa-solid fa-circle me-1" style="font-size: 6px"></i>
+              {{ task.priorityValue }}
+            </span>
+
+
+            <div class="d-flex gap-3 text-secondary small mb-3">
+              <span>
+                <i class="fa-regular fa-calendar me-1"></i>
+                {{ task.dateValue }}
+              </span>
+              <span>
+                <i class="fa-regular fa-clock me-1"></i>
+                Just now
+              </span>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button class="btn border-0 btn-warning btn-sm rounded-3 px-3" (click)="returnToToDo($index, 'done')">
+                <i class="fa-solid fa-arrow-rotate-left me-1"></i>
+                To do
+              </button>
+              <button class="btn border-0 btn-success btn-sm rounded-3 px-3" (click)="sendToInProgress($index, 'done')">
+                <i class="fa-solid fa-play me-1"></i>
+                Start
+              </button>
+            </div>
+          </div>
+          } @empty {
+          <div class="d-flex flex-column align-items-center justify-content-center py-5">
+            <i class="fa-solid fa-folder fa-2x text-secondary mb-2 opacity-25"></i>
+            <div class="text-muted">No tasks yet</div>
+            <div class="text-muted small">Click + to add one</div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
